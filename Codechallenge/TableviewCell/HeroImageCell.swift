@@ -67,8 +67,11 @@ class HeroImageCell: UITableViewCell {
         
         let rightConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0.0)
         self.addConstraint(rightConstraint)
-     
-        heightConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 100)
+
+        let bottomConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0.0)
+        self.addConstraint(bottomConstraint)
+
+        heightConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 233)
         self.addConstraint(heightConstraint)
     }
 

@@ -14,7 +14,6 @@ class DetailedCell: UITableViewCell {
     var authors: UILabel = UILabel()
     var originalSource: UILabel = UILabel()
     var updatedDate: UILabel = UILabel()
-    var body: UITextView = UITextView()
     
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String!)
@@ -26,15 +25,11 @@ class DetailedCell: UITableViewCell {
         self.authors.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
         self.originalSource.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
         self.updatedDate.font = UIFont(name: Constants.Config.defaultNavFont, size: 14.0)!
-        
-        self.body.scrollEnabled = false
-        self.body.editable = false
 
         self.addSubview(title);
         self.addSubview(authors);
         self.addSubview(originalSource);
         self.addSubview(updatedDate);
-        self.addSubview(body);
         self.addChildViewConstraints()
     }
     
@@ -52,10 +47,7 @@ class DetailedCell: UITableViewCell {
         self.originalSource.text = newsInfo.originalSource
         self.updatedDate.text = newsInfo.dateUpdated
         self.authors.text = newsInfo.authors
-        
-        let body = newsInfo.body
-        let attrStr = Utility.convertStrToDescAttriuteStr(body)
-        self.body.attributedText = attrStr
+        self.layoutIfNeeded()
     }
     
     func addChildViewConstraints(){
@@ -63,7 +55,6 @@ class DetailedCell: UITableViewCell {
         originalSource.translatesAutoresizingMaskIntoConstraints = false
         authors.translatesAutoresizingMaskIntoConstraints = false
         updatedDate.translatesAutoresizingMaskIntoConstraints = false
-        body.translatesAutoresizingMaskIntoConstraints = false
         
         var allConstraints = [NSLayoutConstraint]()
         
@@ -72,8 +63,7 @@ class DetailedCell: UITableViewCell {
             "title":self.title,
             "originalSource":self.originalSource,
             "authors":self.authors,
-            "updatedDate":self.updatedDate,
-            "body":self.body]
+            "updatedDate":self.updatedDate]
         
         //position constraints
         
@@ -102,14 +92,8 @@ class DetailedCell: UITableViewCell {
             metrics: nil, views: viewsDictionary)
         allConstraints += updatedDate_constraint_H
 
-        let body_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-10-[body]-10-|",
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil, views: viewsDictionary)
-        allConstraints += body_constraint_H
-
         let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[title]-8-[authors]-8-[originalSource]-8-[updatedDate]-8-[body]-8-|",
+            "V:|-8-[title]-8-[authors]-8-[originalSource]-8-[updatedDate]-8-|",
             options: NSLayoutFormatOptions.AlignAllLeading,
             metrics: nil, views: viewsDictionary)
         allConstraints += view_constraint_V

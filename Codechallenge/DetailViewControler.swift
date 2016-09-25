@@ -14,6 +14,7 @@ class DetailViewControler: UIViewController {
     var refreshControl: UIRefreshControl!
     var newsInfo:NewsModel?
     var imageCache = [String:UIImage]()
+    var storyPragraphs:[String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +25,13 @@ class DetailViewControler: UIViewController {
         self.view .addSubview(tableView);
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "HeroImageCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "DetailedCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "StoryPragraphCell")
         self.tableView.separatorStyle = .None
         
         self.tableView.estimatedRowHeight = 280
         self.tableView.rowHeight = UITableViewAutomaticDimension
 
+        self.storyPragraphs = newsInfo!.body.componentsSeparatedByString("\n\n")
         self.addTableViewConstarinst()
     }
     
@@ -75,26 +78,46 @@ extension DetailViewControler:UITableViewDataSource{
     {
         
         if newsInfo?.heroImage != nil {
-            return 2
+            return 2 + self.storyPragraphs.count
         }else{
-            return 1
+            return 1 + self.storyPragraphs.count
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         // If a hero image of withd 650 and type "PRIMARY" is prest the add the image
-        if newsInfo?.heroImage != nil
-        && indexPath.row == 0{
-            let cell:HeroImageCell = HeroImageCell(style:UITableViewCellStyle.Default, reuseIdentifier:"HeroImageCell");
-            cell.setCell(newsInfo!.heroImage!)
-            cell.selectionStyle = .Default
-            return cell;
+        if newsInfo?.heroImage != nil{
+            if indexPath.row == 0 {
+                let cell:HeroImageCell = HeroImageCell(style:UITableViewCellStyle.Default, reuseIdentifier:"HeroImageCell");
+                cell.setCell(newsInfo!.heroImage!)
+                cell.selectionStyle = .Default
+                return cell;
+            }else if indexPath.row == 1{
+                let cell:DetailedCell = DetailedCell(style:UITableViewCellStyle.Default, reuseIdentifier:"DetailedCell");
+                cell.setCell(newsInfo!)
+                cell.selectionStyle = .Default
+                return cell;
+            }else{
+                let cell:StoryPragraphCell = StoryPragraphCell(style:UITableViewCellStyle.Default, reuseIdentifier:"StoryPragraphCell");
+                let storyText = self.storyPragraphs[indexPath.row-2]
+                cell.setCell(storyText)
+                cell.selectionStyle = .Default
+                return cell;
+            }
         }else{
-            let cell:DetailedCell = DetailedCell(style:UITableViewCellStyle.Default, reuseIdentifier:"DetailedCell");
-            cell.setCell(newsInfo!)
-            cell.selectionStyle = .Default
-            return cell;
+            if indexPath.row == 0{
+                let cell:DetailedCell = DetailedCell(style:UITableViewCellStyle.Default, reuseIdentifier:"DetailedCell");
+                cell.setCell(newsInfo!)
+                cell.selectionStyle = .Default
+                return cell;
+            }else{
+                let cell:StoryPragraphCell = StoryPragraphCell(style:UITableViewCellStyle.Default, reuseIdentifier:"StoryPragraphCell");
+                let storyText = self.storyPragraphs[indexPath.row-1]
+                cell.setCell(storyText)
+                cell.selectionStyle = .Default
+                return cell;
+            }
         }
     }
 }
