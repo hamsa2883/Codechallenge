@@ -26,6 +26,9 @@ class DetailViewControler: UIViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "DetailedCell")
         self.tableView.separatorStyle = .None
         
+        self.tableView.estimatedRowHeight = 280
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+
         self.addTableViewConstarinst()
     }
     
@@ -84,7 +87,7 @@ extension DetailViewControler:UITableViewDataSource{
         if newsInfo?.heroImage != nil
         && indexPath.row == 0{
             let cell:HeroImageCell = HeroImageCell(style:UITableViewCellStyle.Default, reuseIdentifier:"HeroImageCell");
-            cell.setCell(newsInfo!.heroImage!.link)
+            cell.setCell(newsInfo!.heroImage!)
             cell.selectionStyle = .Default
             return cell;
         }else{
@@ -108,49 +111,6 @@ extension DetailViewControler:UITableViewDelegate
         let headerView=UIView(frame: CGRectMake(0, 0, tableView.frame.size.width, 0.0))
         headerView.backgroundColor = UIColor.clearColor()
         return headerView
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        if newsInfo?.heroImage != nil
-            && indexPath.row == 0{
-            let heroImageHeightRatio = newsInfo!.heroImage!.width/newsInfo!.heroImage!.height
-            return ScreenSize.SCREEN_WIDTH/heroImageHeightRatio;
-        }else{
-            let title: UILabel = UILabel()
-            let authors: UILabel = UILabel()
-            let originalSource: UILabel = UILabel()
-            let updatedDate: UILabel = UILabel()
-            let body: UITextView = UITextView()
-
-            title.frame = CGRectMake(0, 0, self.tableView.frame.size.width-20, CGFloat.max)
-            authors.frame = CGRectMake(0, 0, self.tableView.frame.size.width-20, CGFloat.max)
-            originalSource.frame = CGRectMake(0, 0, self.tableView.frame.size.width-20, CGFloat.max)
-            updatedDate.frame = CGRectMake(0, 0, self.tableView.frame.size.width-20, CGFloat.max)
-            body.frame = CGRectMake(0, 0, self.tableView.frame.size.width-20, CGFloat.max)
-
-            title.numberOfLines = 2
-            title.font = UIFont(name: Constants.Config.defaultBoldFont, size: Constants.Config.titleFontSize)!
-            authors.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
-            originalSource.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
-            updatedDate.font = UIFont(name: Constants.Config.defaultNavFont, size: 14.0)!
-
-            title.text = newsInfo!.title
-            originalSource.text = newsInfo!.originalSource
-            updatedDate.text = newsInfo!.dateUpdated
-            authors.text = newsInfo!.authors
-            
-            let attrStr = Utility.convertStrToDescAttriuteStr(newsInfo!.body)
-            body.attributedText = attrStr
-
-            authors.sizeToFit()
-            title.sizeToFit()
-            originalSource.sizeToFit()
-            updatedDate.sizeToFit()
-            body.sizeToFit()
-
-            return (title.frame.size.height+authors.frame.size.height+originalSource.frame.size.height+updatedDate.frame.size.height+body.frame.size.height+50);
-        }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat

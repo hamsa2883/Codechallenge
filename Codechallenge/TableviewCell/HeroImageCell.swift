@@ -12,13 +12,14 @@ class HeroImageCell: UITableViewCell {
     
     var imgV: UIImageView = UIImageView()
     var imageCache = [String:UIImage]()
-
+    var heightConstraint:NSLayoutConstraint!
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String!)
     {
         super.init(style: UITableViewCellStyle.Value1, reuseIdentifier: reuseIdentifier)
         
         self.addSubview(imgV);
-        self.addBaseViewonstarinst()
+        self.addChildViewConstarinst()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -30,8 +31,8 @@ class HeroImageCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    func setCell(imageUrl: String){
-        let imgURL = NSURL(string: imageUrl)
+    func setCell(imageInfo: ImageModel){
+        let imgURL = NSURL(string: imageInfo.link)
         let request: NSURLRequest = NSURLRequest(URL: imgURL!)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data, response, error in
             
@@ -48,22 +49,27 @@ class HeroImageCell: UITableViewCell {
             }
         }
         task.resume()
+        
+        let heroImageHeightRatio = imageInfo.width/imageInfo.height
+        heightConstraint.constant = ScreenSize.SCREEN_WIDTH/heroImageHeightRatio
+        self.layoutIfNeeded()
+
     }
     
     
-    func addBaseViewonstarinst(){
+    func addChildViewConstarinst(){
         imgV.translatesAutoresizingMaskIntoConstraints = false
         let topConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0.0)
         self.addConstraint(topConstraint)
-        
-        let bottomConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0.0)
-        self.addConstraint(bottomConstraint)
         
         let leftConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0.0)
         self.addConstraint(leftConstraint)
         
         let rightConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0.0)
         self.addConstraint(rightConstraint)
+     
+        heightConstraint = NSLayoutConstraint(item: imgV, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 100)
+        self.addConstraint(heightConstraint)
     }
 
     

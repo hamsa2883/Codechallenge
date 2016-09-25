@@ -109,7 +109,7 @@ class DetailedCell: UITableViewCell {
         allConstraints += body_constraint_H
 
         let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-8-[title]-8-[authors]-8-[originalSource]-8-[updatedDate]-8-[body]",
+            "V:|-8-[title]-8-[authors]-8-[originalSource]-8-[updatedDate]-8-[body]-8-|",
             options: NSLayoutFormatOptions.AlignAllLeading,
             metrics: nil, views: viewsDictionary)
         allConstraints += view_constraint_V
