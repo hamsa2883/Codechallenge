@@ -23,7 +23,6 @@ class APIManager: NSObject {
             .responseJSON { response in
                 print("StatusCode: \(response.response?.statusCode)")
                 if response.result.isSuccess{
-                    print(response.result.value!)
                     successHandler(response.result.value!)
                 }else{
                     print(response.result.error!)

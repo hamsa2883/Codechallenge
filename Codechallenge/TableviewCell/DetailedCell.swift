@@ -47,19 +47,13 @@ class DetailedCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    func setCell(dict: NSDictionary){
-        title.text = Utility.convertOptionalObjToString(dict["title"])
+    func setCell(newsInfo: NewsModel){
+        self.title.text = newsInfo.title
+        self.originalSource.text = newsInfo.originalSource
+        self.updatedDate.text = newsInfo.dateUpdated
+        self.authors.text = newsInfo.authors
         
-        originalSource.text = Utility.convertOptionalObjToString(dict["originalSource"])
-        
-        let dateUpdated = Utility.convertOptionalObjToString(dict["dateUpdated"])
-        self.updatedDate.text = dateUpdated.convertToLocalDate()
-        
-        if let authors = dict["authors"] as? NSArray {
-            self.authors.text = Utility.convertOptionalObjToString(authors[0])
-        }
-        
-        let body = Utility.convertOptionalObjToString(dict["body"])
+        let body = newsInfo.body
         let attrStr = Utility.convertStrToDescAttriuteStr(body)
         self.body.attributedText = attrStr
     }

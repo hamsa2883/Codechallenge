@@ -1,5 +1,5 @@
 //
-//  DetailedVC.swift
+//  DetailViewControler.swift
 //  Codechallenge
 //
 //  Created by Hamsa on 23/09/2016.
@@ -8,21 +8,17 @@
 
 import UIKit
 
-class DetailedVC: UIViewController {
+class DetailViewControler: UIViewController {
     
     var tableView: UITableView = UITableView()
     var refreshControl: UIRefreshControl!
-    var result:NSArray = NSArray()
-    var resutltDict:NSDictionary = NSDictionary()
+    var newsInfo:NewsModel?
     var imageCache = [String:UIImage]()
-    var heroImageUrl:String = ""
-    var heroImageHeightRatio:CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        tableView.frame = CGRectMake(0.0, 0.0, ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT);
         tableView.delegate = self;
         tableView.dataSource = self;
         self.view .addSubview(tableView);
@@ -31,29 +27,6 @@ class DetailedVC: UIViewController {
         self.tableView.separatorStyle = .None
         
         self.addTableViewConstarinst()
-//        self.tableView.estimatedRowHeight = 280
-//        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.getImageUrl()
-
-    }
-    
-    // Hero image: if there is an Image matches width = 650, referenceType=”PRIMARY”
-    func getImageUrl(){
-        if let relateds = resutltDict["related"] as? NSArray  {
-            for related in relateds {
-                let referenceType = Utility.convertOptionalObjToString(related["referenceType"])
-                let width = related["width"] as! Int
-                let height = related["height"] as! Int
-                if referenceType == "PRIMARY"
-                && width == 650{
-                    self.heroImageUrl = Utility.convertOptionalObjToString(related["link"])
-                    // get the imge height to width ratio so that it can be used to set the HeroImageCell height
-                    heroImageHeightRatio = CGFloat(width)/CGFloat(height)
-                    break
-                }
-            }
-            self.tableView.reloadData()
-        }
     }
     
     // Adding the table view constariants.
@@ -86,11 +59,10 @@ class DetailedVC: UIViewController {
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadData()
-        
     }
 }
 
-extension DetailedVC:UITableViewDataSource{
+extension DetailViewControler:UITableViewDataSource{
     func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
         return 1
@@ -98,7 +70,8 @@ extension DetailedVC:UITableViewDataSource{
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if heroImageUrl != "" {
+        
+        if newsInfo?.heroImage != nil {
             return 2
         }else{
             return 1
@@ -108,22 +81,22 @@ extension DetailedVC:UITableViewDataSource{
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         // If a hero image of withd 650 and type "PRIMARY" is prest the add the image
-        if heroImageUrl != ""
+        if newsInfo?.heroImage != nil
         && indexPath.row == 0{
             let cell:HeroImageCell = HeroImageCell(style:UITableViewCellStyle.Default, reuseIdentifier:"HeroImageCell");
-            cell.setCell(self.heroImageUrl)
+            cell.setCell(newsInfo!.heroImage!.link)
             cell.selectionStyle = .Default
             return cell;
         }else{
             let cell:DetailedCell = DetailedCell(style:UITableViewCellStyle.Default, reuseIdentifier:"DetailedCell");
-            cell.setCell(resutltDict)
+            cell.setCell(newsInfo!)
             cell.selectionStyle = .Default
             return cell;
         }
     }
 }
 
-extension DetailedVC:UITableViewDelegate
+extension DetailViewControler:UITableViewDelegate
 {
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
     {
@@ -139,8 +112,9 @@ extension DetailedVC:UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if heroImageUrl != ""
+        if newsInfo?.heroImage != nil
             && indexPath.row == 0{
+            let heroImageHeightRatio = newsInfo!.heroImage!.width/newsInfo!.heroImage!.height
             return ScreenSize.SCREEN_WIDTH/heroImageHeightRatio;
         }else{
             let title: UILabel = UILabel()
@@ -161,19 +135,12 @@ extension DetailedVC:UITableViewDelegate
             originalSource.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
             updatedDate.font = UIFont(name: Constants.Config.defaultNavFont, size: 14.0)!
 
-            title.text = Utility.convertOptionalObjToString(resutltDict["title"])
+            title.text = newsInfo!.title
+            originalSource.text = newsInfo!.originalSource
+            updatedDate.text = newsInfo!.dateUpdated
+            authors.text = newsInfo!.authors
             
-            originalSource.text = Utility.convertOptionalObjToString(resutltDict["originalSource"])
-            
-            let dateUpdated = Utility.convertOptionalObjToString(resutltDict["dateUpdated"])
-            updatedDate.text = dateUpdated.convertToLocalDate()
-            
-            if let author = resutltDict["authors"] as? NSArray {
-                authors.text = Utility.convertOptionalObjToString(author[0])
-            }
-            
-            let contentBody = Utility.convertOptionalObjToString(resutltDict["body"])
-            let attrStr = Utility.convertStrToDescAttriuteStr(contentBody)
+            let attrStr = Utility.convertStrToDescAttriuteStr(newsInfo!.body)
             body.attributedText = attrStr
 
             authors.sizeToFit()

@@ -22,7 +22,8 @@
 		4545E8211D9440320058BD55 /* SF-UI-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4545E8181D9440320058BD55 /* SF-UI-Text-Bold.otf */; };
 		4545E8221D9440320058BD55 /* SF-UI-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4545E8191D9440320058BD55 /* SF-UI-Text-Light.otf */; };
 		4545E8231D9440320058BD55 /* SF-UI-Text-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4545E81A1D9440320058BD55 /* SF-UI-Text-LightItalic.otf */; };
-		45F777851D95100D00BFAF0F /* DetailedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F777841D95100D00BFAF0F /* DetailedVC.swift */; };
+		457F733F1D98127F00165C26 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F733E1D98127F00165C26 /* AppModel.swift */; };
+		45F777851D95100D00BFAF0F /* DetailViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F777841D95100D00BFAF0F /* DetailViewControler.swift */; };
 		45F777871D9521CE00BFAF0F /* HeroImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F777861D9521CE00BFAF0F /* HeroImageCell.swift */; };
 		45FCB3AD1D9528AF00BE2583 /* DetailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FCB3AC1D9528AF00BE2583 /* DetailedCell.swift */; };
 		4FA6D566A392FD94800C12EC /* Pods_Codechallenge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C9EA79EF253A6D78EF86B0 /* Pods_Codechallenge.framework */; };
@@ -69,7 +70,8 @@
 		4545E8181D9440320058BD55 /* SF-UI-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-Bold.otf"; sourceTree = "<group>"; };
 		4545E8191D9440320058BD55 /* SF-UI-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-Light.otf"; sourceTree = "<group>"; };
 		4545E81A1D9440320058BD55 /* SF-UI-Text-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-LightItalic.otf"; sourceTree = "<group>"; };
-		45F777841D95100D00BFAF0F /* DetailedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedVC.swift; sourceTree = "<group>"; };
+		457F733E1D98127F00165C26 /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		45F777841D95100D00BFAF0F /* DetailViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewControler.swift; sourceTree = "<group>"; };
 		45F777861D9521CE00BFAF0F /* HeroImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroImageCell.swift; sourceTree = "<group>"; };
 		45FCB3AC1D9528AF00BE2583 /* DetailedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedCell.swift; sourceTree = "<group>"; };
 		FBEE9D2B646040B8BD41B400 /* Pods-Codechallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Codechallenge.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Codechallenge/Pods-Codechallenge.debug.xcconfig"; sourceTree = "<group>"; };
@@ -132,7 +134,7 @@
 				4545E8051D93A9360058BD55 /* TableviewCell */,
 				4545E7D71D9364260058BD55 /* AppDelegate.swift */,
 				4545E7D91D9364260058BD55 /* ViewController.swift */,
-				45F777841D95100D00BFAF0F /* DetailedVC.swift */,
+				45F777841D95100D00BFAF0F /* DetailViewControler.swift */,
 				4545E7DB1D9364260058BD55 /* Main.storyboard */,
 				4545E7DE1D9364260058BD55 /* Assets.xcassets */,
 				4545E7E01D9364260058BD55 /* LaunchScreen.storyboard */,
@@ -172,6 +174,7 @@
 		4545E8081D93AB2B0058BD55 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				457F733E1D98127F00165C26 /* AppModel.swift */,
 				4545E80B1D93ABD10058BD55 /* Utility.swift */,
 				4545E8091D93AB2B0058BD55 /* Constants.swift */,
 			);
@@ -293,13 +296,18 @@
 				TargetAttributes = {
 					4545E7D31D9364260058BD55 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = Q4J99897CB;
+						DevelopmentTeamName = mobiDdiction;
+						LastSwiftMigration = 0800;
 					};
 					4545E7E71D9364270058BD55 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 4545E7D31D9364260058BD55;
 					};
 					4545E7F21D9364270058BD55 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 4545E7D31D9364260058BD55;
 					};
 				};
@@ -407,8 +415,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45F777851D95100D00BFAF0F /* DetailedVC.swift in Sources */,
+				45F777851D95100D00BFAF0F /* DetailViewControler.swift in Sources */,
 				45FCB3AD1D9528AF00BE2583 /* DetailedCell.swift in Sources */,
+				457F733F1D98127F00165C26 /* AppModel.swift in Sources */,
 				4545E8111D94107F0058BD55 /* APIData.swift in Sources */,
 				4545E80C1D93ABD10058BD55 /* Utility.swift in Sources */,
 				4545E7DA1D9364260058BD55 /* ViewController.swift in Sources */,
@@ -564,6 +573,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.Codechallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -577,6 +587,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.Codechallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -588,6 +599,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.CodechallengeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Codechallenge.app/Codechallenge";
 			};
 			name = Debug;
@@ -600,6 +612,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.CodechallengeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Codechallenge.app/Codechallenge";
 			};
 			name = Release;
@@ -611,6 +624,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.CodechallengeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = Codechallenge;
 			};
 			name = Debug;
@@ -622,6 +636,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Hamsa.CodechallengeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = Codechallenge;
 			};
 			name = Release;

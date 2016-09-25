@@ -45,20 +45,12 @@ class ListCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    func setCell(dict: NSDictionary){
-        title.text = Utility.convertOptionalObjToString(dict["title"])
+    func setCell(newsInfo: NewsModel){
+        title.text = newsInfo.title
         self.imgV.contentMode = .ScaleAspectFill
         self.imgV.clipsToBounds = true
-        if let imageDict = dict["thumbnailImage"] as? NSDictionary {
-            let height = imageDict["height"] as! Int
-            let width = imageDict["width"] as! Int
-            print("height:\(height) width:\(width)")
-        }
-        if let authors = dict["authors"] as? NSArray {
-            self.authors.text = Utility.convertOptionalObjToString(authors[0])
-        }
-        let standFirst = Utility.convertOptionalObjToString(dict["standFirst"])
-        self.standfirst.text = standFirst
+        self.authors.text = newsInfo.authors
+        self.standfirst.text = newsInfo.standFirst
     }
     
     func addChildViewConstraints(){

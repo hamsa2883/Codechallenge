@@ -12,14 +12,13 @@ class ViewController: UIViewController {
 
     var tableView: UITableView = UITableView()
     var refreshControl: UIRefreshControl!
-    var result:NSArray = NSArray()
+    var newsInfo:[NewsModel] = []
     var imageCache = [String:UIImage]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        tableView.frame = CGRectMake(0.0, (UIApplication .sharedApplication()).statusBarFrame.size.height, ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT);
         tableView.delegate = self;
         tableView.dataSource = self;
         self.view .addSubview(tableView);
@@ -63,10 +62,12 @@ class ViewController: UIViewController {
     func getStoresData(callback: (error: NSError?) -> Void) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             APIData.sharedInstance.getData({ response in
-                print(response)
                 if let data = response["data"] as? NSDictionary{
-                    if let result = data["results"] as? NSArray{
-                        self.result = result
+                    if let results = data["results"] as? [NSDictionary]{
+                        for result in results{
+                            let newsInfo = NewsModel.init(newsInfo: result)
+                            self.newsInfo.append(newsInfo)
+                        }
                     }
                 }
                 callback(error: nil)
@@ -139,17 +140,17 @@ extension ViewController:UITableViewDataSource{
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return result.count
+        return self.newsInfo.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cell:ListCell = ListCell(style:UITableViewCellStyle.Default, reuseIdentifier:"ListCell");
-        let result = self.result[indexPath.row] as! NSDictionary
-        cell.setCell(result)
+        let newsInfo = self.newsInfo[indexPath.row]
+        cell.setCell(newsInfo)
         
-        if let imageDict = result["thumbnailImage"] as? NSDictionary {
-            let url = Utility.convertOptionalObjToString(imageDict["link"])
+        if newsInfo.thumbnailImage != nil {
+            let url = newsInfo.thumbnailImage!.link
             let imgURL = NSURL(string: url)
             // Set the image to nil so that the reuse cell will not have a worng image before the image is loaded
             cell.imgV.image = nil
@@ -201,7 +202,7 @@ extension ViewController:UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        let result = self.result[indexPath.row] as! NSDictionary
+        let newsInfo = self.newsInfo[indexPath.row]
         let title: UILabel = UILabel()
         let author: UILabel = UILabel()
         let standfirst: UILabel = UILabel()
@@ -215,12 +216,9 @@ extension ViewController:UITableViewDelegate
         author.font = UIFont(name: Constants.Config.defaultNavFont, size: Constants.Config.textFontSize)!
         standfirst.font = UIFont(name: Constants.Config.defaultFontLight, size: Constants.Config.textFontSize)!
 
-        title.text = Utility.convertOptionalObjToString(result["title"])
-        if let authors = result["authors"] as? NSArray {
-            author.text = Utility.convertOptionalObjToString(authors[0])
-        }
-        let standFirst = Utility.convertOptionalObjToString(result["standFirst"])
-        standfirst.text = standFirst
+        title.text = newsInfo.title
+        author.text = newsInfo.authors
+        standfirst.text = newsInfo.standFirst
         
         author.sizeToFit()
         title.sizeToFit()
@@ -250,9 +248,9 @@ extension ViewController:UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let result = self.result[indexPath.row] as! NSDictionary
-        let detailedVC = DetailedVC()
-        detailedVC.resutltDict = result
+        let newsInfo = self.newsInfo[indexPath.row]
+        let detailedVC = DetailViewControler()
+        detailedVC.newsInfo = newsInfo
         self.navigationController!.pushViewController(detailedVC, animated: true)
     }
     
